@@ -30,3 +30,22 @@ print(x,y,z)
 print(type(x))#nos dice cual es el tipo del dato
 print(type(y))
 print(type(z))
+
+#3 solicitud de datos
+
+#dato_solicitado = input("Introduce un dato: ")
+#dato_solicitadoI = int(input("Introduce un numero entero: "))
+#dato_solicitadoF= float(input("Introduce un número decimal: "))
+
+#4 boolean, comparacion y logicos
+print(10>9) #mayor que 
+print(10<9)
+print(10==9)
+print(10>=9)
+print(10<=9)
+print(10!=9)
+
+x=1
+print(x<5 and x<10)
+print(x<5 or x<10)
+print(not(x<5 and x<10))
