@@ -1,6 +1,6 @@
 repetir = True
 while repetir:
-    cadena = input("Ingresa una cadena de texto: ").replace(" ", "").lower()
+    cadena = input("Ingresa una cadena de texto: ").replace(" ", "").replace(",","").replace(".","").replace("-","").lower()
     if cadena.isalpha()!=True:
         print("Solo palabras")
     elif cadena == "":

@@ -11,10 +11,13 @@ while True:
          repetir=False
          
     if repetir==True:
-        if numero % 2 == 0:
-            print(f"El número {numero} es par")
-        else:
-            print(f"El número {numero} es impar")
+        if numero ==0 or numero<0:
+            print("El número no es positivo")
+        else:    
+            if numero % 2 == 0:
+                print(f"El número {numero} es par")
+            else:
+                print(f"El número {numero} es impar")
             
     opcion = input("Ingres 's' si quires ingresar otro número y 'n' si ya no: ")
     if opcion!="s":
