@@ -8,6 +8,8 @@ while repetir:
         if numero <=10:
             print("EL número debe de ser entero mayor a 10")
         else:
+            #por medio de list comprehension se guarda en numerosImpares el numeroImpar obtenido del arreglo
+            #que va de 2 hasta numero+1 solo si el residuo de numeroImpar/2 es diferente de 0
             numerosImpares = [str(numeroImpar) for numeroImpar in range(2,numero+1) if numeroImpar % 2 != 0]
             print(", ".join(numerosImpares))
             
