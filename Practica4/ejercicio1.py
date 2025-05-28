@@ -15,7 +15,7 @@ while repetir:
          print("Ingrese un número entero por favor \n")
          repetir=False
 
-    match input("Ingresa 's' si quieres ingresar otra fecha, si no ingresa 'n': "):
+    match input("Ingresa 's' si quieres ingresar otro número, si no ingresa 'n': "):
         case 's':
             repetir=True
         case _:
