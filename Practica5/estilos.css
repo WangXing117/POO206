@@ -77,3 +77,13 @@ section {
   height: 20px;
   background-color: #9C27B0; /* morado */
 }
+
+.normal-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.normal-height .card-body {
+  flex-grow: 1;
+}
