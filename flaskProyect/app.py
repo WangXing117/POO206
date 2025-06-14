@@ -1,8 +1,35 @@
 #Importaciones importante
-from flask import Flask
+from flask import Flask, jsonify
+from conexion_sqlserver import obtenerConexion
+from flask_mysqldb import MySQL
+import MySQLdb
+import pyodbc
 
 app = Flask(__name__)
 
+# app.config['MYSQL_HOST'] = 'localhost'
+# app.config['MYSQL_USER'] = 'root'
+# app.config['MYSQL_PASSWORD'] = ''
+# app.config['MYSQL_DB'] = 'Flaskpoo'
+# app.config['MYSQL_PORT'] = 3306 #3306 ES EL PUERTO POR DEFECTO
+
+# mysql = MySQL(app)
+# @app.route('/dbcheck')
+# def DB_Check():
+    # try:
+    #     cursor = mysql.connection.cursor()
+    #     cursor.excute('Select 1') #Esto devuleve un 1 para ver q si alcance la base de datos
+    #     return jsonify({
+    #         'status':'ok',
+    #         'message':'!! Conectado con exito !!',
+    #     }), 200
+    # except MySQLdb.MySQLError as e:
+    #     return jsonify({
+    #         'status':'Error',
+    #         'message':str(e),
+    #     }), 500
+    
+############
 #Ruta simple
 @app.route('/')
 def home(): #para que inicie la interfaz home
@@ -28,7 +55,27 @@ def doubleroute(): #har[a] que las dos rutas de arruba lleven a lo mismo
 def formulario():
     return 'Soy un formulario'
 
-
+    
+@app.route('/dbcheck')
+def DB_Check():
+    try:
+        conn = obtenerConexion()
+        cursor = conn.cursor()
+        cursor.execute('Select 1')
+        print('!!!!!!!!!!!!! conexion exitosa !!!!!!!!!!!!!!!!!!!!!!!!!!1')
+        return jsonify({
+           'status':'ok',
+             'message':'!! Conectado con exito !!',
+         }), 200
+    
+    except Exception as e:
+        return jsonify({
+           'status':'Error',
+             'message':str(e),
+         }), 500
+    finally:
+        conn.close()
+        
 if __name__ == '__main__':
     app .run(port = 3000, debug = True)
     
