@@ -1,5 +1,5 @@
 #Importaciones importante
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from conexion_sqlserver import obtenerConexion
 from flask_mysqldb import MySQL
 import MySQLdb
@@ -32,28 +32,37 @@ app = Flask(__name__)
 ############
 #Ruta simple
 @app.route('/')
-def home(): #para que inicie la interfaz home
-    return 'Hola mundo FLASK'
+def home(): #para que inicie la interfaz formulario por default
+    return render_template('formulario.html')
 
-#Ruta con parametros
-@app.route('/saludo/<nombre>')
-def saludar(nombre): # int:nombre para castearlo pr default es string
-    return 'Hola, ' + nombre
+@app.route('/consulta')
+def consulta(): #para que inicie la interfaz consulta
+    return render_template('consulta.html')
+
+# #Ruta con parametros
+# @app.route('/saludo/<nombre>')
+# def saludar(nombre): # int:nombre para castearlo pr default es string
+#     return 'Hola, ' + nombre
 #RUTA TRY-CATH
 @app.errorhandler(404) #errorhandler con el n[umero de error]
 def paginaNoE(e): #pagina No Encontrada 
     print(e)
     return 'Ha ocurrido un error: !!!'
 
-#Ruta doble
-@app.route('/usuario')
-@app.route('/usuaria')
-def doubleroute(): #har[a] que las dos rutas de arruba lleven a lo mismo
-    return 'Soy el mismo recurso del servidor'
-#ruta post forzada
-@app.route('/formulario',methods=['POST'])
-def formulario():
-    return 'Soy un formulario'
+@app.errorhandler(405) #errorhandler con el n[umero de error]
+def paginaNoEr(e): #pagina No Encontrada 
+    print(e)
+    return 'Ha ocurrido un error: !!!'
+
+# #Ruta doble
+# @app.route('/usuario')
+# @app.route('/usuaria')
+# def doubleroute(): #har[a] que las dos rutas de arruba lleven a lo mismo
+#     return 'Soy el mismo recurso del servidor'
+# #ruta post forzada
+# @app.route('/formulario',methods=['POST'])
+# def formulario():
+#     return 'Soy un formulario'
 
     
 @app.route('/dbcheck')
