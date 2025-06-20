@@ -1,11 +1,12 @@
 #Importaciones importante
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request, flash, url_for, redirect
 from conexion_sqlserver import obtenerConexion
 from flask_mysqldb import MySQL
 import MySQLdb
 import pyodbc
 
 app = Flask(__name__)
+app.secret_key = 'mysecretkey'
 
 # app.config['MYSQL_HOST'] = 'localhost'
 # app.config['MYSQL_USER'] = 'root'
@@ -31,10 +32,33 @@ app = Flask(__name__)
     
 ############
 #Ruta simple
+
 @app.route('/')
 def home(): #para que inicie la interfaz formulario por default
     return render_template('formulario.html')
 
+@app.route('/guardarAlbum',methods=['POST'])
+def guardar():
+    #obtener los datos a insertar
+    titulo = request.form.get('txtTitulo','').strip() #si hay espacios a la izq o der strip los quita
+    artista = request.form.get('txtArtista','').strip() #si hay espacios a la izq o der strip los quita
+    anio = request.form.get('txtAno','').strip() #si hay espacios a la izq o der strip los quita
+    
+    #intentamos ejecutar el insert
+    try:
+        conn = obtenerConexion()
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Album(Titulo,Artista,Ano_Publicacion) VALUES (?,?,?)',(titulo,artista,anio))
+        conn.commit() #confirmacion del cambio
+        flash('Album guardado correctamente')
+        return redirect(url_for('home'))
+    except Exception as e:
+        conn.rollback() #revierte cualquier cambio
+        flash('Album guardado correctamente')
+        return redirect(url_for('home'))
+    finally:
+        conn.close() #cierra la conexion
+        
 @app.route('/consulta')
 def consulta(): #para que inicie la interfaz consulta
     return render_template('consulta.html')
