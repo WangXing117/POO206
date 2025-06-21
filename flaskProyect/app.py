@@ -39,25 +39,38 @@ def home(): #para que inicie la interfaz formulario por default
 
 @app.route('/guardarAlbum',methods=['POST'])
 def guardar():
+    #lista de errores
+    errores = {}
     #obtener los datos a insertar
     titulo = request.form.get('txtTitulo','').strip() #si hay espacios a la izq o der strip los quita
     artista = request.form.get('txtArtista','').strip() #si hay espacios a la izq o der strip los quita
     anio = request.form.get('txtAno','').strip() #si hay espacios a la izq o der strip los quita
-    
+    #manejo de campos vacios
+    if not titulo:
+        errores['txtTitulo'] = 'Nombre del album obligatorio'
+    if not artista:
+        errores['txtArtista'] = 'Nombre del artista obligatorio'
+    if not anio:
+        errores['txtAno'] = 'Año del album obligatorio'
+    elif not anio.isdigit() or int(anio) < 1800 or int(anio) > 2030:
+        errores['txtAno'] = 'En año solo ingresar un año valido'
+        
+    if not errores:
     #intentamos ejecutar el insert
-    try:
-        conn = obtenerConexion()
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO Album(Titulo,Artista,Ano_Publicacion) VALUES (?,?,?)',(titulo,artista,anio))
-        conn.commit() #confirmacion del cambio
-        flash('Album guardado correctamente')
-        return redirect(url_for('home'))
-    except Exception as e:
-        conn.rollback() #revierte cualquier cambio
-        flash('Album guardado correctamente')
-        return redirect(url_for('home'))
-    finally:
-        conn.close() #cierra la conexion
+        try:
+            conn = obtenerConexion()
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO Album(Titulo,Artista,Ano_Publicacion) VALUES (?,?,?)',(titulo,artista,anio))
+            conn.commit() #confirmacion del cambio
+            flash('Album guardado correctamente')
+            return redirect(url_for('home'))
+        except Exception as e:
+            conn.rollback() #revierte cualquier cambio
+            flash('Album guardado correctamente')
+            return redirect(url_for('home'))
+        finally:
+            conn.close() #cierra la conexion
+    return render_template('formulario.html', errores = errores)
         
 @app.route('/consulta')
 def consulta(): #para que inicie la interfaz consulta
