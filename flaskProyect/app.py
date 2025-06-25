@@ -35,7 +35,18 @@ app.secret_key = 'mysecretkey'
 
 @app.route('/')
 def home(): #para que inicie la interfaz formulario por default
-    return render_template('formulario.html')
+    try:
+        conn = obtenerConexion()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Album')
+        consultaTodo = cursor.fetchall()
+        return render_template('formulario.html', errores = {}, albums = consultaTodo)
+    except Exception as e:
+        print('Error al consultar todo: '+e)
+        return render_template('formulario.html', errores = {}, albums = [])
+    finally:
+        if cursor:
+            cursor.close()
 
 @app.route('/guardarAlbum',methods=['POST'])
 def guardar():

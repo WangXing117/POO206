@@ -35,5 +35,22 @@
         {% endif %}
         <button type="submit">Guardar Album</button> <!--submit pq es para post-->
     </form>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <td>Id:</td>
+                <td>Album:</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for album in albums %}
+            <tr>
+                <td>{{album.0}}</td>
+                <td><a href="/detalles/{{album.0}}">{{album.1}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
