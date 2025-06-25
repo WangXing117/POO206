@@ -47,6 +47,20 @@ def home(): #para que inicie la interfaz formulario por default
     finally:
         if cursor:
             cursor.close()
+@app.route('/detalles/<albumID>')
+def detalle(albumID): #para que inicie la interfaz formulario por default
+    try:
+        conn = obtenerConexion()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Album WHERE ID = (?)',albumID)
+        consultaTodo = cursor.fetchone()
+        return render_template('consulta.html', errores = {}, album = consultaTodo)
+    except Exception as e:
+        print('Error al consultar el album: '+e)
+        return render_template('consulta.html', errores = {}, album = [])
+    finally:
+        if cursor:
+            cursor.close()
 
 @app.route('/guardarAlbum',methods=['POST'])
 def guardar():
