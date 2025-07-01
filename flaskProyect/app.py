@@ -42,7 +42,7 @@ def home(): #para que inicie la interfaz formulario por default
         consultaTodo = cursor.fetchall()
         return render_template('formulario.html', errores = {}, albums = consultaTodo)
     except Exception as e:
-        print('Error al consultar todo: '+e)
+        print('Error al consultar todo: '+str(e))
         return render_template('formulario.html', errores = {}, albums = [])
     finally:
         if cursor:
@@ -56,7 +56,7 @@ def detalle(albumID): #para que inicie la interfaz formulario por default
         consultaTodo = cursor.fetchone()
         return render_template('consulta.html', errores = {}, album = consultaTodo)
     except Exception as e:
-        print('Error al consultar el album: '+e)
+        print('Error al consultar el album: '+str(e))
         return render_template('consulta.html', errores = {}, album = [])
     finally:
         if cursor:
@@ -126,7 +126,60 @@ def paginaNoEr(e): #pagina No Encontrada
 # def formulario():
 #     return 'Soy un formulario'
 
-    
+@app.route('/editarAlbum/<alb>')
+def verEditarAlbum(alb):
+    errores = {}
+    try:
+        conn = obtenerConexion()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Album WHERE ID = (?)',(alb))
+        album = cursor.fetchone()
+        if album:
+            return render_template('editarAlbum.html',album = album)
+        else:
+            errores["filaError"] = 'Error al obtener la fila de la base de datos'
+    except Exception as e:
+        print('Error durante el proceso de actualizacion: '+ str(e))
+        errores['excepcion'] = 'Ha ocurrido un error durante la obtencion del album'
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+    return render_template('editarAlbum.html', errores = errores)
+
+@app.route('/editarAlbum', methods=['POST'])
+def editarAlbum():
+    errores = {}
+    try:
+        titulo = request.form.get('txtTitulo','').strip() #si hay espacios a la izq o der strip los quita
+        artista = request.form.get('txtArtista','').strip() #si hay espacios a la izq o der strip los quita
+        anio = request.form.get('txtAno','').strip() #si hay espacios a la izq o der strip los quita
+        IDAlbum = request.form.get('idAlbum','')
+        print()
+        #manejo de campos vacios
+        if not titulo:
+            errores['txtTitulo'] = 'Nombre del album obligatorio'
+        if not artista:
+            errores['txtArtista'] = 'Nombre del artista obligatorio'
+        if not anio:
+            errores['txtAno'] = 'Año del album obligatorio'
+        elif not anio.isdigit() or int(anio) < 1800 or int(anio) > 2030:
+            errores['txtAno'] = 'En año solo ingresar un año valido'
+            
+        if not errores:
+            conn = obtenerConexion()
+            cursor = conn.cursor()
+            cursor.execute('UPDATE Album SET Titulo = ?, Artista = ?, Ano_Publicacion = ? WHERE ID = (?)',(titulo,artista,anio,IDAlbum))
+            conn.commit() #confirmacion del cambio
+            flash('Album actualizado correctamente')
+            return redirect(url_for('home'))
+    except Exception as e:
+        print('Error al intentar actualizar en la base de datos: '+ str(e))
+        errores['updateTable'] = 'Error al actualizar en la base de datos'
+    return render_template('editarAlbum.html', errores = errores)
+
 @app.route('/dbcheck')
 def DB_Check():
     try:
