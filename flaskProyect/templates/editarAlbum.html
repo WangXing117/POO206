@@ -18,6 +18,15 @@
                 <h4>{{ msj }}</h4>
             {% endfor %}
         {% endif %}
+        {% if errores and errores.filaError %}
+             <p style="color:red">{{errores.filaError}}</p>
+        {% endif %}
+        {% if errores and errores.excepcion %}
+             <p style="color:red">{{errores.excepcion}}</p>
+        {% endif %}
+        {% if errores and errores.updateTable %}
+             <p style="color:red">{{errores.updateTable}}</p>
+        {% endif %}
     {% endwith %}
     <form action="/editarAlbum" method="POST">
         <input type = "text" name = "txtTitulo" placeholder="Titulo" value = "{{ request.form.txtTitulo or album.1}}">
@@ -32,7 +41,7 @@
        {% if errores and errores.txtAno %}
             <p style="color:red">{{errores.txtAno}}</p>
         {% endif %}
-        <input type = "hidden" name = "idAlbum" value = "{{request.form.idAlbum or album.0}}">
+        <input type = "hidden" name = "idAlbum" value = "{{ request.form.idAlbum or album.0}}">
         <button type="submit">Actualizar Album</button> <!--submit pq es para post-->
     </form>
     <br>

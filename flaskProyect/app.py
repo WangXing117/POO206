@@ -178,7 +178,7 @@ def editarAlbum():
     except Exception as e:
         print('Error al intentar actualizar en la base de datos: '+ str(e))
         errores['updateTable'] = 'Error al actualizar en la base de datos'
-    return render_template('editarAlbum.html', errores = errores)
+    return render_template('editarAlbum.html', errores = errores, album = [])
 
 @app.route('/dbcheck')
 def DB_Check():
