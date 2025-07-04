@@ -38,7 +38,7 @@ def home(): #para que inicie la interfaz formulario por default
     try:
         conn = obtenerConexion()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Album')
+        cursor.execute('SELECT * FROM Album WHERE Estado = 1')
         consultaTodo = cursor.fetchall()
         return render_template('formulario.html', errores = {}, albums = consultaTodo)
     except Exception as e:
@@ -179,6 +179,45 @@ def editarAlbum():
         print('Error al intentar actualizar en la base de datos: '+ str(e))
         errores['updateTable'] = 'Error al actualizar en la base de datos'
     return render_template('editarAlbum.html', errores = errores, album = [])
+
+@app.route('/eliminarAlbum/<idAlbum>', methods=['GET', 'POST'])
+def eliminarAlbum(idAlbum):
+    errores = {}
+    nombreAlbum = []
+
+    try:
+        conn = obtenerConexion()
+        cursor = conn.cursor()
+
+        if request.method == 'POST':
+            idA = request.form.get('idAlbum', '').strip()
+            if not idA:
+                errores['idError'] = 'ID no retornado'
+            else:
+                cursor.execute('UPDATE Album SET Estado = ? WHERE ID = ?', (0, idA))
+                conn.commit()
+                flash('Álbum eliminado correctamente')
+                return redirect(url_for('home'))
+
+        elif request.method == 'GET':
+            cursor.execute('SELECT ID, Titulo, Artista FROM Album WHERE ID = ? AND Estado = 1', (idAlbum,))
+            nom = cursor.fetchone()
+            if not nom:
+                errores['nombreError'] = 'No se encontró el álbum o ya fue eliminado'
+            else:
+                nombreAlbum = nom
+
+    except Exception as e:
+        print('Error en eliminarAlbum: ' + str(e))
+        errores['eliminarError'] = 'Error en la operación'
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conn' in locals():
+            conn.close()
+
+    return render_template('eliminarAlbum.html', errores=errores, nombreAlbum=nombreAlbum)
 
 @app.route('/dbcheck')
 def DB_Check():

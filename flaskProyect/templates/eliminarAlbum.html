@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar álbum</title>
+</head>
+<body>
+    <h2>Eliminar álbum</h2>
+
+    {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            {% for msj in mensajes %}
+                <h4 style="color: green">{{ msj }}</h4>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if errores and errores.idError %}
+        <p style="color:red">{{ errores.idError }}</p>
+    {% endif %}
+    {% if errores and errores.eliminarError %}
+        <p style="color:red">{{ errores.eliminarError }}</p>
+    {% endif %}
+    {% if errores and errores.nombreError %}
+        <p style="color:red">{{ errores.nombreError }}</p>
+    {% endif %}
+
+    {% if nombreAlbum %}
+        <h3>¿Seguro que desea eliminar el álbum <strong>"{{ nombreAlbum[1] }}"</strong> del artista <strong>{{ nombreAlbum[2] }}</strong>?</h3>
+
+        <form action="{{ url_for('eliminarAlbum', idAlbum=nombreAlbum[0]) }}" method="POST">
+            <input type="hidden" name="idAlbum" value="{{ nombreAlbum[0] }}">
+            <button type="submit">Eliminar</button>
+            <a href="/"><button type="button">Regresar</button></a>
+        </form>
+    {% else %}
+        <p style="color:red">No se encontró el álbum.</p>
+        <a href="/"><button type="button">Volver al inicio</button></a>
+    {% endif %}
+</body>
+</html>
