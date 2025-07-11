@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de comentario</title>
+</head>
+<body>
+    <h2>Consulta de comentario</h2>
+    <a href="/">Regresar al formulario</a>
+     {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            {% for msj in mensajes %}
+                <h4>{{ msj }}</h4>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <br>
+    {% if album %}
+        <table>
+        <thead>
+            <tr>
+                <td>Id:</td>
+                <td>Restaurante:</td>
+                <td>Tipo de comida:</td>
+                <td>Comentario:</td>
+                <td>Calificacion:</td>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td>{{album.0}}</td>
+                <td>{{album.1}}</td>
+                <td>{{album.2}}</td>
+                <td>{{album.3}}</td>
+                <td>{{album.4}}</td>
+                <td><a href="/editarAlbum/{{album.0}}">Editar</a></td>
+                <td><a href="/eliminarAlbum/{{album.0}}">Eliminar</a></td>
+            </tr>
+            
+        </tbody>
+    </table>
+    {% else %}
+        {% if errores and errores.dbError %}
+        <p style="color:red">{{errores.dbError}}</p>
+    {% endif %}
+    {% endif %}
+</body>
+</html>

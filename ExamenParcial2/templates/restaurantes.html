@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Restaurantes</title>
+</head>
+<body>
+    <h2>Deja tu comentario</h2>
+    <!-- <a href="/consulta">Abrir vista Consulta</a> -->
+    <br>
+    <br>
+    <br>
+    <!--Mensaje controlado por jinja-->
+    <!--Inicio de bloque-->
+    {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            {% for msj in mensajes %}
+                <h4>{{ msj }}</h4>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% if errores and errores.dbError %}
+        <p style="color:red">{{errores.dbError}}</p>
+    {% endif %}
+    <form action="/guardarComentario" method="POST">
+        <input type = "text" name = "txtTitulo" placeholder="Nombre de Restaurante" value = "{{ request.form.txtTitulo }}">
+        {% if errores and errores.txtTitulo %}
+            <p style="color:red">{{errores.txtTitulo}}</p>
+        {% endif %}
+        <input type = "text" name = "txtArtista" placeholder="Tipo de comida" value = "{{ request.form.txtArtista }}">
+        {% if errores and errores.txtArtista %}
+            <p style="color:red">{{errores.txtArtista}}</p>
+        {% endif %}
+        <input type = "number" name = "txtAno" placeholder="Calificacion del 1 al 5" value = "{{ request.form.txtAno }}">
+       {% if errores and errores.txtAno %}
+            <p style="color:red">{{errores.txtAno}}</p>
+        {% endif %}
+        <textarea  name="txtComentario" placeholder="Agrega tu comentario">{{ request.form.txtComentario}}</textarea>
+        {% if errores and errores.txtComentario %}
+             <p style="color:red">{{errores.txtComentario}}</p>
+         {% endif %}
+
+        <button type="submit">Guardar comentario</button> <!--submit pq es para post-->
+    </form>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <td>Id:</td>
+                <td>Restaurante:</td>
+                <td>Calificacion:</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for album in albums %}
+            <tr>
+                <td>{{album.0}}</td>
+                <td><a href="/detalles/{{album.0}}">{{album.1}}</a></td>
+                <td><a href="/detalles/{{album.0}}">{{album.4}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar album</title>
+</head>
+<body>
+    <h2>Editar album</h2>
+     <br>
+    <br>
+    <br>
+    <!--Mensaje controlado por jinja-->
+    <!--Inicio de bloque-->
+    {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            {% for msj in mensajes %}
+                <h4>{{ msj }}</h4>
+            {% endfor %}
+        {% endif %}
+        {% if errores and errores.filaError %}
+             <p style="color:red">{{errores.filaError}}</p>
+        {% endif %}
+        {% if errores and errores.excepcion %}
+             <p style="color:red">{{errores.excepcion}}</p>
+        {% endif %}
+        {% if errores and errores.updateTable %}
+             <p style="color:red">{{errores.updateTable}}</p>
+        {% endif %}
+    {% endwith %}
+    {% if album or request.form.txtTitulo or request.form.txtAno or request.form.txtArtista or request.form.txtComentario%}
+        <form action="/editarAlbum" method="POST">
+        <input type = "text" name = "txtTitulo" placeholder="Restaurante" value = "{{ request.form.txtTitulo or album.1}}">
+        {% if errores and errores.txtTitulo %}
+            <p style="color:red">{{errores.txtTitulo}}</p>
+        {% endif %}
+        <input type = "text" name = "txtArtista" placeholder="Tipo de comida" value = "{{ request.form.txtArtista or album.2}}">
+        {% if errores and errores.txtArtista %}
+            <p style="color:red">{{errores.txtArtista}}</p>
+        {% endif %}
+        <input type = "number" name = "txtAno" placeholder="Califica del 1 al 5" value = "{{ request.form.txtAno or album.4}}">
+       {% if errores and errores.txtAno %}
+            <p style="color:red">{{errores.txtAno}}</p>
+        {% endif %}
+        <textarea  name="txtComentario" placeholder="Agrega tu comentario">{{ request.form.txtComentario or album.3 }}</textarea>
+        {% if errores and errores.txtComentario %}
+             <p style="color:red">{{errores.txtComentario}}</p>
+         {% endif %}
+        <input type = "hidden" name = "idAlbum" value = "{{ request.form.idAlbum or album.0}}">
+        <button type="submit">Actualizar comentario</button> <!--submit pq es para post-->
+    </form>
+    {% else %}
+        <h2>Error al encontrar algo</h2>
+    {% endif %}
+    <br>
+    <button><a href="{{url_for('home')}}">Regresar</a></button>
+</body>
+</html>
