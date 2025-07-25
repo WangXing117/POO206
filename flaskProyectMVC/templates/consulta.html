@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta</title>
+</head>
+<body>
+    <h2>Consulta de album</h2>
+    <a href="/">Regresar al formulario</a>
+     {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            {% for msj in mensajes %}
+                <h4>{{ msj }}</h4>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <td>Id:</td>
+                <td>Titulo:</td>
+                <td>Artista:</td>
+                <td>Año de publicación:</td>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td>{{album.0}}</td>
+                
+                <td>{{album.1}}</td>
+                <td>{{album.2}}</td>
+                <td>{{album.3}}</td>
+                <td><a href="/editarAlbum/{{album.0}}">Editar</a></td>
+                <td><a href="/eliminarAlbum/{{album.0}}">Eliminar</a></td>
+            </tr>
+            
+        </tbody>
+    </table>
+</body>
+</html>
