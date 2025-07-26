@@ -20,14 +20,7 @@
     <p style="color:red">{{errores.updateTable}}</p>
     {% endif %}
     {% endwith %}
-    <div class="row">
-        <div class="col-md-5">
-            
-        </div>
-        <div class="col-md-7">
-
-        </div>
-    </div>
+   
     <form action="/editarAlbum" method="POST">
         <input type = "text" name = "txtTitulo" placeholder="Titulo" value = "{{ request.form.txtTitulo or album.1}}">
         {% if errores and errores.txtTitulo %}
@@ -45,6 +38,6 @@
         <button type="submit">Actualizar Album</button> <!--submit pq es para post-->
     </form>
     
-    <button class="mt-2"><a href="{{url_for('albums.home')}}">Regresar</a></button>
+    <button class="mt-5"><a href="{{url_for('albums.home')}}">Regresar</a></button>
 
     {% endblock %}
