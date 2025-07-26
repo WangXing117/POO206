@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario</title>
-</head>
-<body>
-    <h2>Vista del formulario</h2>
-    <a href="/consulta">Abrir vista Consulta</a>
-    <br>
-    <br>
-    <br>
+{% extends 'plantilla.html' %}
+    {% block body%}
+    <h2 class="mb-5">Vista del formulario</h2>
+
     <!--Mensaje controlado por jinja-->
     <!--Inicio de bloque-->
     {% with mensajes = get_flashed_messages() %}
@@ -20,37 +11,52 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <form action="{{ url_for('albums.guardar') }}" method="POST">
-        <input type = "text" name = "txtTitulo" placeholder="Titulo" value = "{{ request.form.txtTitulo }}">
-        {% if errores and errores.txtTitulo %}
-            <p style="color:red">{{errores.txtTitulo}}</p>
-        {% endif %}
-        <input type = "text" name = "txtArtista" placeholder="Artista" value = "{{ request.form.txtArtista }}">
-        {% if errores and errores.txtArtista %}
-            <p style="color:red">{{errores.txtArtista}}</p>
-        {% endif %}
-        <input type = "number" name = "txtAno" placeholder="Año de publicación" value = "{{ request.form.txtAno }}">
-       {% if errores and errores.txtAno %}
-            <p style="color:red">{{errores.txtAno}}</p>
-        {% endif %}
-        <button type="submit">Guardar Album</button> <!--submit pq es para post-->
-    </form>
-    <br>
-    <table>
-        <thead>
-            <tr>
-                <td>Id:</td>
-                <td>Album:</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for album in albums %}
-            <tr>
-                <td>{{album.0}}</td>
-                <td><a href="/detalles/{{album.0}}">{{album.1}}</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+    <div class="row">
+        <div class="col-md-5">
+            <h2 class="mb-5">Registro de album</h2>
+            <form action="{{ url_for('albums.guardar') }}" method="POST" >
+                <div class="mb-3">
+                    <input class="form-control" type = "text" name = "txtTitulo" placeholder="Titulo" value = "{{ request.form.txtTitulo }}">
+                    {% if errores and errores.txtTitulo %}
+                        <p style="color:red">{{errores.txtTitulo}}</p>
+                    {% endif %} 
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type = "text" name = "txtArtista" placeholder="Artista" value = "{{ request.form.txtArtista }}">
+                    {% if errores and errores.txtArtista %}
+                        <p style="color:red">{{errores.txtArtista}}</p>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" type = "number" name = "txtAno" placeholder="Año de publicación" value = "{{ request.form.txtAno }}">
+                   {% if errores and errores.txtAno %}
+                        <p style="color:red">{{errores.txtAno}}</p>
+                    {% endif %}
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit">Guardar Album</button> <!--submit pq es para post-->
+                </div>
+            </form>
+        </div>
+        <div class="col-md-7">
+            <h2 class="mt-3">Albunes registrados</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td scope="col">Id:</td>
+                        <td scope="col">Album:</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for album in albums %}
+                    <tr>
+                        <td>{{album.0}}</td>
+                        <td><a href="/detalles/{{album.0}}">{{album.1}}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    {% endblock %}

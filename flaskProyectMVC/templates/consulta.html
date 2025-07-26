@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta</title>
-</head>
-<body>
+{% extends 'plantilla.html' %}
+    {% block body%}
+
     <h2>Consulta de album</h2>
     <a href="/">Regresar al formulario</a>
      {% with mensajes = get_flashed_messages() %}
@@ -15,7 +10,7 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <br>
+    
     <table>
         <thead>
             <tr>
@@ -39,5 +34,5 @@
             
         </tbody>
     </table>
-</body>
-</html>
+
+    {% endblock %}

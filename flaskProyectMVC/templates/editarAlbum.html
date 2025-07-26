@@ -1,33 +1,33 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar album</title>
-</head>
-<body>
-    <h2>Editar album</h2>
-     <br>
-    <br>
-    <br>
+{% extends 'plantilla.html' %}
+    {% block body%}
+
+    <h2 class="mb-5">Editar album</h2>
     <!--Mensaje controlado por jinja-->
     <!--Inicio de bloque-->
     {% with mensajes = get_flashed_messages() %}
-        {% if mensajes %}
-            {% for msj in mensajes %}
-                <h4>{{ msj }}</h4>
-            {% endfor %}
-        {% endif %}
-        {% if errores and errores.filaError %}
-             <p style="color:red">{{errores.filaError}}</p>
-        {% endif %}
-        {% if errores and errores.excepcion %}
-             <p style="color:red">{{errores.excepcion}}</p>
-        {% endif %}
-        {% if errores and errores.updateTable %}
-             <p style="color:red">{{errores.updateTable}}</p>
-        {% endif %}
+    {% if mensajes %}
+    {% for msj in mensajes %}
+    <h4>{{ msj }}</h4>
+    {% endfor %}
+    {% endif %}
+    {% if errores and errores.filaError %}
+    <p style="color:red">{{errores.filaError}}</p>
+    {% endif %}
+    {% if errores and errores.excepcion %}
+    <p style="color:red">{{errores.excepcion}}</p>
+    {% endif %}
+    {% if errores and errores.updateTable %}
+    <p style="color:red">{{errores.updateTable}}</p>
+    {% endif %}
     {% endwith %}
+    <div class="row">
+        <div class="col-md-5">
+            
+        </div>
+        <div class="col-md-7">
+
+        </div>
+    </div>
     <form action="/editarAlbum" method="POST">
         <input type = "text" name = "txtTitulo" placeholder="Titulo" value = "{{ request.form.txtTitulo or album.1}}">
         {% if errores and errores.txtTitulo %}
@@ -44,7 +44,7 @@
         <input type = "hidden" name = "idAlbum" value = "{{ request.form.idAlbum or album.0}}">
         <button type="submit">Actualizar Album</button> <!--submit pq es para post-->
     </form>
-    <br>
-    <button><a href="{{url_for('albums.home')}}">Regresar</a></button>
-</body>
-</html>
+    
+    <button class="mt-2"><a href="{{url_for('albums.home')}}">Regresar</a></button>
+
+    {% endblock %}
