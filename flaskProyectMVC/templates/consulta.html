@@ -1,7 +1,7 @@
 {% extends 'plantilla.html' %}
     {% block body%}
 
-    <h2>Consulta de album</h2>
+    <h2 class="mb-5">Consulta de album</h2>
     <a href="/">Regresar al formulario</a>
      {% with mensajes = get_flashed_messages() %}
         {% if mensajes %}
@@ -11,25 +11,25 @@
         {% endif %}
     {% endwith %}
     
-    <table>
+    <table class="table">
         <thead>
             <tr>
-                <td>Id:</td>
-                <td>Titulo:</td>
-                <td>Artista:</td>
-                <td>Año de publicación:</td>
+                <td scope="col">Id:</td>
+                <td scope="col">Titulo:</td>
+                <td scope="col">Artista:</td>
+                <td scope="col">Año de publicación:</td>
             </tr>
         </thead>
         <tbody>
             
             <tr>
-                <td>{{album.0}}</td>
+                <td><p class="text-dark">{{album.0}}</p></td>
                 
-                <td>{{album.1}}</td>
-                <td>{{album.2}}</td>
-                <td>{{album.3}}</td>
-                <td><a href="/editarAlbum/{{album.0}}">Editar</a></td>
-                <td><a href="/eliminarAlbum/{{album.0}}">Eliminar</a></td>
+                <td><p class="text-dark">{{album.1}}</p></td>
+                <td><p class="text-dark">{{album.2}}</p></td>
+                <td><p class="text-dark">{{album.3}}</p></td>
+                <td><p><a class="link-underline-success" href="/editarAlbum/{{album.0}}">Editar</a></p></td>
+                <td><p><a class="link-underline-danger" href="/eliminarAlbum/{{album.0}}">Eliminar</a></p></td>
             </tr>
             
         </tbody>

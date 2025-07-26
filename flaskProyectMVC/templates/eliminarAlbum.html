@@ -23,10 +23,10 @@
     {% if nombreAlbum %}
         <h3 class="mt-5">¿Seguro que desea eliminar el álbum <strong>"{{ nombreAlbum[1] }}"</strong> del artista <strong>{{ nombreAlbum[2] }}</strong>?</h3>
 
-        <form class="mt-5" action="{{ url_for('albums.eliminarAlbum', idAlbum=nombreAlbum[0]) }}" method="POST">
-            <input type="hidden" name="idAlbum" value="{{ nombreAlbum[0] }}">
-            <button type="submit">Eliminar</button>
-            <a href="/"><button type="button">Regresar</button></a>
+        <form class="mt-5 mb-3" action="{{ url_for('albums.eliminarAlbum', idAlbum=nombreAlbum[0]) }}" method="POST">
+            <input class="form-control" type="hidden" name="idAlbum" value="{{ nombreAlbum[0] }}">
+            <button class="btn btn-danger" type="submit">Eliminar</button>
+            <a href="/"><button class="btn btn-primary" type="button">Regresar</button></a>
         </form>
     {% else %}
         <p style="color:red">No se encontró el álbum.</p>
